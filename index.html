@@ -431,17 +431,17 @@
     .form-card {
       background: var(--white);
       border-radius: 18px;
-      padding: 40px 36px;
+      padding: 48px 44px;
       box-shadow: 0 2px 32px rgba(0,0,0,.07);
       border: 1.5px solid var(--border);
     }
 
-    .field { margin-bottom: 18px; }
+    .field { margin-bottom: 22px; }
     .field label {
       display: block;
-      font-size: .825rem;
+      font-size: .95rem;
       font-weight: 600;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       color: var(--black);
       letter-spacing: .01em;
     }
@@ -451,11 +451,11 @@
     input[type="email"],
     input[type="tel"] {
       width: 100%;
-      padding: 11px 14px;
+      padding: 14px 16px;
       border: 1.5px solid var(--border);
       border-radius: 10px;
       font-family: 'DM Sans', sans-serif;
-      font-size: .95rem;
+      font-size: 1rem;
       font-weight: 400;
       background: var(--bg);
       color: var(--text);
@@ -463,6 +463,9 @@
       transition: border-color .2s, background .2s;
     }
     input:focus { border-color: var(--green-dark); background: var(--white); }
+    input.invalid { border-color: #e05252; background: #fff8f8; }
+    .error-msg { display: none; font-size: .8rem; color: #e05252; margin-top: 5px; font-weight: 500; }
+    .error-msg.show { display: block; }
 
     .check-wrap {
       display: flex;
@@ -510,9 +513,9 @@
       color: var(--white);
       border: none;
       border-radius: 100px;
-      padding: 15px;
+      padding: 18px;
       font-family: 'DM Sans', sans-serif;
-      font-size: .95rem;
+      font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
       margin-top: 6px;
@@ -700,20 +703,24 @@
 
         <div class="field">
           <label for="adres">Jouw adres <small>(t.b.v. de verkoopscan voor jouw woning)</small></label>
-          <input type="text" id="adres" name="adres" placeholder="Straat, huisnummer, postcode, plaats" required />
+          <input type="text" id="adres" name="adres" placeholder="Straat, huisnummer, postcode, plaats" />
+          <span class="error-msg" id="err-adres">Vul je adres in.</span>
         </div>
         <div class="field">
           <label for="naam">Naam</label>
-          <input type="text" id="naam" name="naam" placeholder="Jouw volledige naam" required />
+          <input type="text" id="naam" name="naam" placeholder="Jouw volledige naam" />
+          <span class="error-msg" id="err-naam">Vul je naam in.</span>
         </div>
 
         <label class="check-wrap">
-          <input type="checkbox" id="toestemming" name="toestemming" value="ja" required />
+          <input type="checkbox" id="toestemming" name="toestemming" value="ja" />
           <span>Ik ontvang graag een verkoopscan van mijn woning in ruil voor een kort videogesprek.</span>
         </label>
+        <span class="error-msg" id="err-toestemming" style="margin-top:-12px;margin-bottom:12px;">Vink dit aan om verder te gaan.</span>
         <p class="check-sub">Het gesprek is alleen voor onderzoeksdoeleinden. We proberen je niks te verkopen en je zit nergens aan vast.</p>
 
         <div class="radio-label">Hoe mogen we je benaderen?</div>
+        <span class="error-msg" id="err-contact" style="margin-bottom:8px;">Kies een contactmethode.</span>
         <div class="radio-list">
           <label class="radio-opt">
             <input type="radio" name="contact" value="mail" onchange="updateContact(this)" required />
@@ -732,10 +739,12 @@
         <div class="cond field" id="f-tel">
           <label for="telefoon">Op welk telefoonnummer kunnen we je bereiken?</label>
           <input type="tel" id="telefoon" name="telefoon" placeholder="+31 6 12 34 56 78" />
+          <span class="error-msg" id="err-tel">Vul je telefoonnummer in.</span>
         </div>
         <div class="cond field" id="f-email">
           <label for="email">Wat is je emailadres?</label>
           <input type="email" id="email" name="email" placeholder="jouw@emailadres.nl" />
+          <span class="error-msg" id="err-email">Vul een geldig e-mailadres in.</span>
         </div>
 
         <button type="submit" class="btn-submit">Verstuur aanmelding →</button>
@@ -749,7 +758,7 @@
         </svg>
       </div>
       <h3>Bedankt voor je aanmelding!</h3>
-      <p>We nemen zo snel mogelijk contact met je op via de door jou gekozen methode om een videogesprek in te plannen. Tot snel!</p>
+      <p>Bedankt voor je aanmelding. We nemen binnenkort contact met je op voor het plannen van het videogesprek.</p>
     </div>
   </div>
 </div>
@@ -841,8 +850,52 @@
     });
   });
 
+  function showError(id, inputId) {
+    document.getElementById(id).classList.add('show');
+    if (inputId) document.getElementById(inputId).classList.add('invalid');
+  }
+  function clearError(id, inputId) {
+    document.getElementById(id).classList.remove('show');
+    if (inputId) document.getElementById(inputId).classList.remove('invalid');
+  }
+
+  ['adres', 'naam', 'telefoon', 'email'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('input', function() { clearError('err-' + (id === 'telefoon' ? 'tel' : id === 'email' ? 'email' : id), id); });
+  });
+
+  document.getElementById('toestemming').addEventListener('change', function() {
+    if (this.checked) clearError('err-toestemming', null);
+  });
+
   document.getElementById('main-form').addEventListener('submit', function(e) {
     e.preventDefault();
+    var valid = true;
+
+    var adres = document.getElementById('adres').value.trim();
+    if (!adres) { showError('err-adres', 'adres'); valid = false; } else { clearError('err-adres', 'adres'); }
+
+    var naam = document.getElementById('naam').value.trim();
+    if (!naam) { showError('err-naam', 'naam'); valid = false; } else { clearError('err-naam', 'naam'); }
+
+    var toestemming = document.getElementById('toestemming').checked;
+    if (!toestemming) { showError('err-toestemming', null); valid = false; } else { clearError('err-toestemming', null); }
+
+    var contact = document.querySelector('input[name="contact"]:checked');
+    if (!contact) { showError('err-contact', null); valid = false; } else { clearError('err-contact', null); }
+
+    if (contact && (contact.value === 'bel' || contact.value === 'whatsapp')) {
+      var tel = document.getElementById('telefoon').value.trim();
+      if (!tel) { showError('err-tel', 'telefoon'); valid = false; } else { clearError('err-tel', 'telefoon'); }
+    }
+    if (contact && contact.value === 'mail') {
+      var email = document.getElementById('email').value.trim();
+      var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      if (!emailOk) { showError('err-email', 'email'); valid = false; } else { clearError('err-email', 'email'); }
+    }
+
+    if (!valid) return;
+
     fetch('/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
