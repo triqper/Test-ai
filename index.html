@@ -170,15 +170,50 @@
       object-fit: cover;
       display: block;
     }
-    .hero-list {
-      text-align: left;
-      padding-left: 20px;
+    .usp-block {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r);
+      padding: 20px 24px;
       margin-bottom: 32px;
-      font-size: 1rem;
-      color: var(--text);
-      line-height: 1.8;
+      text-align: left;
     }
-    .hero-list li { margin-bottom: 4px; }
+    .usp-block-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 14px;
+    }
+    .usp-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .usp-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: .95rem;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .usp-list li::before {
+      content: '✓';
+      flex-shrink: 0;
+      width: 22px; height: 22px;
+      background: var(--green);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .75rem;
+      font-weight: 700;
+      color: var(--black);
+      margin-top: 1px;
+    }
 
     .hero-partner {
       font-size: .75rem;
@@ -549,11 +584,14 @@
       <h1>Bedankt voor je interesse</h1>
       <p class="hero-subtitle">Ons platform is nog in de maak.</p>
       <p class="hero-subtitle">Help ons de puntjes op de i te zetten in ruil voor een <span style="color:var(--green-dark);font-weight:600;">gratis verkoopscan t.w.v. €100</span> van jouw woning.</p>
-      <ol class="hero-list">
-        <li>Krijg direct de woningwaarde van jouw woning.</li>
-        <li>Krijg inzicht in de interesse in jouw buurt.</li>
-        <li>Ontdek verkooptrends van jouw buurt op basis van recente verkoopdata.</li>
-      </ol>
+      <div class="usp-block">
+        <div class="usp-block-title">Verkoopscan van jouw woning</div>
+        <ul class="usp-list">
+          <li>Krijg direct de woningwaarde van jouw woning.</li>
+          <li>Krijg inzicht in de interesse in jouw buurt.</li>
+          <li>Ontdek verkooptrends van jouw buurt op basis van recente verkoopdata.</li>
+        </ul>
+      </div>
       <p class="hero-sub">We zouden je graag in een kort videogesprek wat vragen stellen over jouw woonwensen — zodat we precies weten waar onze oplossing het verschil moet maken.</p>
       <p class="hero-sub">Als dank ontvang je gratis een verkoopscan van jouw woning t.w.v. €100 — met de verwachte verkoopwaarde én inzicht in de interesse van woningzoekenden in jouw buurt.</p>
       <div class="hero-actions">
