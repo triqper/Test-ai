@@ -898,17 +898,6 @@
   var adresTimer;
   var adresSelected = false;
 
-  function validateAdres() {
-    if (!adresInput.value.trim()) {
-      showError('err-adres', 'adres');
-      document.getElementById('err-adres').textContent = 'Vul je straat en huisnummer in.';
-    } else if (!adresSelected) {
-      showError('err-adres', 'adres');
-      document.getElementById('err-adres').textContent = 'Selecteer een adres uit de lijst.';
-    } else {
-      clearError('err-adres', 'adres');
-    }
-  }
 
   adresInput.addEventListener('input', function() {
     adresSelected = false;
@@ -988,8 +977,8 @@
     e.preventDefault();
     var valid = true;
 
-    validateAdres();
-    if (!adresSelected || !adresInput.value.trim()) valid = false;
+    var adres = adresInput.value.trim();
+    if (!adres) { showError('err-adres', 'adres'); valid = false; } else { clearError('err-adres', 'adres'); }
 
     var postcode = document.getElementById('postcode').value.trim();
     if (!postcode) { showError('err-postcode', 'postcode'); valid = false; } else { clearError('err-postcode', 'postcode'); }
