@@ -756,7 +756,7 @@
         <div id="form-fields" style="display:none;">
           <div class="field">
             <label for="naam">Naam</label>
-            <input type="text" id="naam" name="naam" placeholder="Jouw volledige naam" />
+            <input type="text" id="naam" name="naam" placeholder="Jouw naam" />
             <span class="error-msg" id="err-naam">Vul je naam in.</span>
           </div>
 
@@ -893,11 +893,25 @@
   });
 
   // PDOK adres autocomplete
-  var adresInput  = document.getElementById('adres');
+  var adresInput    = document.getElementById('adres');
   var adresDropdown = document.getElementById('adres-dropdown');
   var adresTimer;
+  var adresSelected = false;
+
+  function validateAdres() {
+    if (!adresInput.value.trim()) {
+      showError('err-adres', 'adres');
+      document.getElementById('err-adres').textContent = 'Vul je straat en huisnummer in.';
+    } else if (!adresSelected) {
+      showError('err-adres', 'adres');
+      document.getElementById('err-adres').textContent = 'Selecteer een adres uit de lijst.';
+    } else {
+      clearError('err-adres', 'adres');
+    }
+  }
 
   adresInput.addEventListener('input', function() {
+    adresSelected = false;
     clearTimeout(adresTimer);
     var q = this.value.trim();
     if (q.length < 3) { adresDropdown.style.display = 'none'; return; }
@@ -917,6 +931,7 @@
               var d = docs[parseInt(this.dataset.i)];
               var straat = (d.straatnaam || '') + (d.huisnummer ? ' ' + d.huisnummer : '');
               adresInput.value = straat || d.weergavenaam;
+              adresSelected = true;
               adresInput.blur();
               if (d.postcode) {
                 var pc = d.postcode;
@@ -936,7 +951,10 @@
   });
 
   adresInput.addEventListener('blur', function() {
-    setTimeout(function() { adresDropdown.style.display = 'none'; }, 150);
+    setTimeout(function() {
+      adresDropdown.style.display = 'none';
+      if (adresInput.value.trim()) validateAdres();
+    }, 150);
   });
 
   document.addEventListener('click', function(e) {
@@ -973,8 +991,8 @@
     e.preventDefault();
     var valid = true;
 
-    var adres = document.getElementById('adres').value.trim();
-    if (!adres) { showError('err-adres', 'adres'); valid = false; } else { clearError('err-adres', 'adres'); }
+    validateAdres();
+    if (!adresSelected || !adresInput.value.trim()) valid = false;
 
     var postcode = document.getElementById('postcode').value.trim();
     if (!postcode) { showError('err-postcode', 'postcode'); valid = false; } else { clearError('err-postcode', 'postcode'); }
