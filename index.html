@@ -755,7 +755,7 @@
 
         <div id="form-fields" style="display:none;">
           <div class="field">
-            <label for="naam">Naam</label>
+            <label for="naam">Jouw naam</label>
             <input type="text" id="naam" name="naam" placeholder="Jouw naam" />
             <span class="error-msg" id="err-naam">Vul je naam in.</span>
           </div>
@@ -951,10 +951,7 @@
   });
 
   adresInput.addEventListener('blur', function() {
-    setTimeout(function() {
-      adresDropdown.style.display = 'none';
-      if (adresInput.value.trim()) validateAdres();
-    }, 150);
+    setTimeout(function() { adresDropdown.style.display = 'none'; }, 150);
   });
 
   document.addEventListener('click', function(e) {
