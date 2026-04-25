@@ -52,18 +52,18 @@
       height: 32px;
       padding: 0 14px;
       border-radius: 100px;
-      background: var(--bg);
-      border: 1.5px solid var(--border);
+      background: var(--black);
+      border: 1.5px solid var(--black);
       font-family: 'DM Sans', sans-serif;
       font-size: .8rem;
       font-weight: 600;
       font-style: normal;
-      color: var(--muted);
+      color: var(--white);
       cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       transition: background .2s, border-color .2s;
     }
-    .info-btn:hover { background: var(--green); border-color: var(--green); color: var(--black); }
+    .info-btn:hover { background: #2a2a2a; border-color: #2a2a2a; }
     .info-overlay {
       display: none;
       position: fixed;
@@ -77,7 +77,7 @@
     .info-popup {
       background: var(--white);
       border-radius: var(--r);
-      padding: 32px 36px 28px;
+      padding: 0;
       max-width: 480px;
       width: calc(100% - 40px);
       box-shadow: 0 8px 40px rgba(0,0,0,.15);
@@ -87,19 +87,31 @@
       line-height: 1.7;
       max-height: 85vh;
       overflow-y: auto;
+      display: flex;
+      flex-direction: column;
     }
+    .info-popup-header {
+      position: sticky;
+      top: 0;
+      background: var(--white);
+      z-index: 10;
+      display: flex;
+      justify-content: flex-end;
+      padding: 16px 20px 8px;
+      border-radius: var(--r) var(--r) 0 0;
+    }
+    .info-popup-body { padding: 0 36px 32px; }
     .info-close {
-      position: absolute;
-      top: 12px; right: 12px;
-      width: 28px; height: 28px;
+      width: 40px; height: 40px;
       border-radius: 50%;
       background: var(--bg);
       border: 1.5px solid var(--border);
       cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1rem;
-      color: var(--muted);
+      font-size: 1.3rem;
+      color: var(--text);
       line-height: 1;
+      flex-shrink: 0;
     }
     .info-close:hover { background: var(--border); }
     .nav-logo { height: 46px; display: block; }
@@ -664,12 +676,16 @@
 
 <div class="info-overlay" id="infoOverlay" onclick="if(event.target===this)this.classList.remove('show')">
   <div class="info-popup">
-    <button class="info-close" onclick="document.getElementById('infoOverlay').classList.remove('show')">×</button>
-    <h3 style="font-family:'Fraunces',serif;font-size:1.3rem;font-weight:700;color:var(--black);margin-bottom:16px;">Over Woonstroom</h3>
-    <p>Woonstroom is een initiatief in samenwerking met een erkende Nederlandse financiële instelling en data expert in de woonsector.</p>
-    <p style="margin-top:16px;">Onze missie is om mensen te helpen in deze gekke woningmarkt te verhuizen naar hun gewenste woning. Met behulp van deze flyer campagne proberen wij in contact te komen met woningeigenaren om meer te leren over hun behoeften en hoe wij ze hierbij kunnen helpen.</p>
-    <h3 style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:var(--black);margin-top:28px;margin-bottom:4px;">Veelgestelde vragen</h3>
-    <div id="faq-popup"></div>
+    <div class="info-popup-header">
+      <button class="info-close" onclick="document.getElementById('infoOverlay').classList.remove('show')">×</button>
+    </div>
+    <div class="info-popup-body">
+      <h3 style="font-family:'Fraunces',serif;font-size:1.3rem;font-weight:700;color:var(--black);margin-bottom:16px;">Over Woonstroom</h3>
+      <p>Woonstroom is een initiatief in samenwerking met een erkende Nederlandse financiële instelling en data expert in de woonsector.</p>
+      <p style="margin-top:16px;">Onze missie is om mensen te helpen in deze gekke woningmarkt te verhuizen naar hun gewenste woning. Met behulp van deze flyer campagne proberen wij in contact te komen met woningeigenaren om meer te leren over hun behoeften en hoe wij ze hierbij kunnen helpen.</p>
+      <h3 style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:var(--black);margin-top:28px;margin-bottom:4px;">Veelgestelde vragen</h3>
+      <div id="faq-popup"></div>
+    </div>
   </div>
 </div>
 
