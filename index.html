@@ -725,32 +725,6 @@
         <input type="hidden" name="form-name" value="woonstroom" />
         <p style="display:none"><label>Niet invullen: <input name="bot-field" /></label></p>
 
-        <div class="field">
-          <label for="adres">Jouw adres <small>(t.b.v. de verkoopscan voor jouw woning)</small></label>
-          <div class="adres-wrap">
-            <input type="text" id="adres" name="adres" placeholder="Straat en huisnummer" autocomplete="off" />
-            <div id="adres-dropdown"></div>
-          </div>
-          <span class="error-msg" id="err-adres">Vul je straat en huisnummer in.</span>
-        </div>
-        <div class="field-row">
-          <div class="field">
-            <label for="postcode">Postcode</label>
-            <input type="text" id="postcode" name="postcode" placeholder="1234 AB" autocomplete="off" />
-            <span class="error-msg" id="err-postcode">Vul je postcode in.</span>
-          </div>
-          <div class="field">
-            <label for="plaats">Plaats</label>
-            <input type="text" id="plaats" name="plaats" placeholder="Plaatsnaam" autocomplete="off" />
-            <span class="error-msg" id="err-plaats">Vul je plaats in.</span>
-          </div>
-        </div>
-        <div class="field">
-          <label for="naam">Naam</label>
-          <input type="text" id="naam" name="naam" placeholder="Jouw volledige naam" />
-          <span class="error-msg" id="err-naam">Vul je naam in.</span>
-        </div>
-
         <label class="check-wrap">
           <input type="checkbox" id="toestemming" name="toestemming" value="ja" />
           <span>Ik ontvang graag een verkoopscan van mijn woning in ruil voor een kort videogesprek.</span>
@@ -758,35 +732,64 @@
         <span class="error-msg" id="err-toestemming" style="margin-top:-12px;margin-bottom:12px;">Vink dit aan om verder te gaan.</span>
         <p class="check-sub">Het gesprek is alleen voor onderzoeksdoeleinden. We proberen je niks te verkopen en je zit nergens aan vast.</p>
 
-        <div class="radio-label">Hoe mogen we je benaderen?</div>
-        <span class="error-msg" id="err-contact" style="margin-bottom:8px;">Kies een contactmethode.</span>
-        <div class="radio-list">
-          <label class="radio-opt">
-            <input type="radio" name="contact" value="mail" onchange="updateContact(this)" required />
-            <span>Stuur mij een mail</span>
-          </label>
-          <label class="radio-opt">
-            <input type="radio" name="contact" value="bel" onchange="updateContact(this)" />
-            <span>Bel mij</span>
-          </label>
-          <label class="radio-opt">
-            <input type="radio" name="contact" value="whatsapp" onchange="updateContact(this)" />
-            <span>Stuur mij een WhatsApp</span>
-          </label>
-        </div>
+        <div id="form-fields" style="display:none;">
+          <div class="field">
+            <label for="naam">Naam</label>
+            <input type="text" id="naam" name="naam" placeholder="Jouw volledige naam" />
+            <span class="error-msg" id="err-naam">Vul je naam in.</span>
+          </div>
 
-        <div class="cond field" id="f-tel">
-          <label for="telefoon">Op welk telefoonnummer kunnen we je bereiken?</label>
-          <input type="tel" id="telefoon" name="telefoon" placeholder="+31 6 12 34 56 78" />
-          <span class="error-msg" id="err-tel">Vul je telefoonnummer in.</span>
-        </div>
-        <div class="cond field" id="f-email">
-          <label for="email">Wat is je emailadres?</label>
-          <input type="email" id="email" name="email" placeholder="jouw@emailadres.nl" />
-          <span class="error-msg" id="err-email">Vul een geldig e-mailadres in.</span>
-        </div>
+          <div class="field">
+            <label for="adres">Jouw adres <small>(t.b.v. de verkoopscan voor jouw woning)</small></label>
+            <div class="adres-wrap">
+              <input type="text" id="adres" name="adres" placeholder="Straat en huisnummer" autocomplete="off" />
+              <div id="adres-dropdown"></div>
+            </div>
+            <span class="error-msg" id="err-adres">Vul je straat en huisnummer in.</span>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="postcode">Postcode</label>
+              <input type="text" id="postcode" name="postcode" placeholder="1234 AB" autocomplete="off" />
+              <span class="error-msg" id="err-postcode">Vul je postcode in.</span>
+            </div>
+            <div class="field">
+              <label for="plaats">Plaats</label>
+              <input type="text" id="plaats" name="plaats" placeholder="Plaatsnaam" autocomplete="off" />
+              <span class="error-msg" id="err-plaats">Vul je plaats in.</span>
+            </div>
+          </div>
 
-        <button type="submit" class="btn-submit">Ontvang gratis verkoopscan</button>
+          <div class="radio-label">Hoe mogen we je benaderen?</div>
+          <span class="error-msg" id="err-contact" style="margin-bottom:8px;">Kies een contactmethode.</span>
+          <div class="radio-list">
+            <label class="radio-opt">
+              <input type="radio" name="contact" value="mail" onchange="updateContact(this)" />
+              <span>Stuur mij een mail</span>
+            </label>
+            <label class="radio-opt">
+              <input type="radio" name="contact" value="bel" onchange="updateContact(this)" />
+              <span>Bel mij</span>
+            </label>
+            <label class="radio-opt">
+              <input type="radio" name="contact" value="whatsapp" onchange="updateContact(this)" />
+              <span>Stuur mij een WhatsApp</span>
+            </label>
+          </div>
+
+          <div class="cond field" id="f-tel">
+            <label for="telefoon">Op welk telefoonnummer kunnen we je bereiken?</label>
+            <input type="tel" id="telefoon" name="telefoon" placeholder="+31 6 12 34 56 78" />
+            <span class="error-msg" id="err-tel">Vul je telefoonnummer in.</span>
+          </div>
+          <div class="cond field" id="f-email">
+            <label for="email">Wat is je emailadres?</label>
+            <input type="email" id="email" name="email" placeholder="jouw@emailadres.nl" />
+            <span class="error-msg" id="err-email">Vul een geldig e-mailadres in.</span>
+          </div>
+
+          <button type="submit" class="btn-submit">Ontvang gratis verkoopscan</button>
+        </div>
       </form>
     </div>
 
@@ -957,7 +960,12 @@
   });
 
   document.getElementById('toestemming').addEventListener('change', function() {
-    if (this.checked) clearError('err-toestemming', null);
+    if (this.checked) {
+      clearError('err-toestemming', null);
+      document.getElementById('form-fields').style.display = 'block';
+    } else {
+      document.getElementById('form-fields').style.display = 'none';
+    }
   });
 
   document.getElementById('main-form').addEventListener('submit', function(e) {
