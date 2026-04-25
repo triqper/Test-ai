@@ -725,6 +725,27 @@
         <input type="hidden" name="form-name" value="woonstroom" />
         <p style="display:none"><label>Niet invullen: <input name="bot-field" /></label></p>
 
+        <div class="field">
+          <label for="adres">Jouw adres <small>(t.b.v. de verkoopscan voor jouw woning)</small></label>
+          <div class="adres-wrap">
+            <input type="text" id="adres" name="adres" placeholder="Straat en huisnummer" autocomplete="off" />
+            <div id="adres-dropdown"></div>
+          </div>
+          <span class="error-msg" id="err-adres">Vul je straat en huisnummer in.</span>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="postcode">Postcode</label>
+            <input type="text" id="postcode" name="postcode" placeholder="1234 AB" autocomplete="off" />
+            <span class="error-msg" id="err-postcode">Vul je postcode in.</span>
+          </div>
+          <div class="field">
+            <label for="plaats">Plaats</label>
+            <input type="text" id="plaats" name="plaats" placeholder="Plaatsnaam" autocomplete="off" />
+            <span class="error-msg" id="err-plaats">Vul je plaats in.</span>
+          </div>
+        </div>
+
         <label class="check-wrap">
           <input type="checkbox" id="toestemming" name="toestemming" value="ja" />
           <span>Ik ontvang graag een verkoopscan van mijn woning in ruil voor een kort videogesprek.</span>
@@ -737,27 +758,6 @@
             <label for="naam">Naam</label>
             <input type="text" id="naam" name="naam" placeholder="Jouw volledige naam" />
             <span class="error-msg" id="err-naam">Vul je naam in.</span>
-          </div>
-
-          <div class="field">
-            <label for="adres">Jouw adres <small>(t.b.v. de verkoopscan voor jouw woning)</small></label>
-            <div class="adres-wrap">
-              <input type="text" id="adres" name="adres" placeholder="Straat en huisnummer" autocomplete="off" />
-              <div id="adres-dropdown"></div>
-            </div>
-            <span class="error-msg" id="err-adres">Vul je straat en huisnummer in.</span>
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <label for="postcode">Postcode</label>
-              <input type="text" id="postcode" name="postcode" placeholder="1234 AB" autocomplete="off" />
-              <span class="error-msg" id="err-postcode">Vul je postcode in.</span>
-            </div>
-            <div class="field">
-              <label for="plaats">Plaats</label>
-              <input type="text" id="plaats" name="plaats" placeholder="Plaatsnaam" autocomplete="off" />
-              <span class="error-msg" id="err-plaats">Vul je plaats in.</span>
-            </div>
           </div>
 
           <div class="radio-label">Hoe mogen we je benaderen?</div>
