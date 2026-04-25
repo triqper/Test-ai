@@ -466,6 +466,7 @@
     input.invalid { border-color: #e05252; background: #fff8f8; }
     .error-msg { display: none; font-size: .8rem; color: #e05252; margin-top: 5px; font-weight: 500; }
     .error-msg.show { display: block; }
+    .field-row { display: grid; grid-template-columns: 1fr 1.5fr; gap: 12px; }
     .adres-wrap { position: relative; }
     #adres-dropdown {
       display: none;
@@ -727,10 +728,22 @@
         <div class="field">
           <label for="adres">Jouw adres <small>(t.b.v. de verkoopscan voor jouw woning)</small></label>
           <div class="adres-wrap">
-            <input type="text" id="adres" name="adres" placeholder="Straat, huisnummer, postcode, plaats" autocomplete="off" />
+            <input type="text" id="adres" name="adres" placeholder="Straat en huisnummer" autocomplete="off" />
             <div id="adres-dropdown"></div>
           </div>
-          <span class="error-msg" id="err-adres">Vul je adres in.</span>
+          <span class="error-msg" id="err-adres">Vul je straat en huisnummer in.</span>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="postcode">Postcode</label>
+            <input type="text" id="postcode" name="postcode" placeholder="1234 AB" autocomplete="off" />
+            <span class="error-msg" id="err-postcode">Vul je postcode in.</span>
+          </div>
+          <div class="field">
+            <label for="plaats">Plaats</label>
+            <input type="text" id="plaats" name="plaats" placeholder="Plaatsnaam" autocomplete="off" />
+            <span class="error-msg" id="err-plaats">Vul je plaats in.</span>
+          </div>
         </div>
         <div class="field">
           <label for="naam">Naam</label>
@@ -886,19 +899,30 @@
     var q = this.value.trim();
     if (q.length < 3) { adresDropdown.style.display = 'none'; return; }
     adresTimer = setTimeout(function() {
-      fetch('https://api.pdok.nl/bzk/locatieserver/search/v3_1/suggest?q=' + encodeURIComponent(q) + '&fq=type:adres&rows=8')
+      fetch('https://api.pdok.nl/bzk/locatieserver/search/v3_1/suggest?q=' + encodeURIComponent(q) + '&fq=type:adres&rows=8&fl=id,weergavenaam,straatnaam,huisnummer,postcode,woonplaatsnaam')
         .then(function(r) { return r.json(); })
         .then(function(data) {
           var docs = (data.response && data.response.docs) || [];
           if (!docs.length) { adresDropdown.style.display = 'none'; return; }
-          adresDropdown.innerHTML = docs.map(function(d) {
-            return '<div class="adres-opt">' + d.weergavenaam + '</div>';
+          adresDropdown.innerHTML = docs.map(function(d, i) {
+            return '<div class="adres-opt" data-i="' + i + '">' + d.weergavenaam + '</div>';
           }).join('');
           adresDropdown.style.display = 'block';
           adresDropdown.querySelectorAll('.adres-opt').forEach(function(opt) {
             opt.addEventListener('mousedown', function(e) {
               e.preventDefault();
-              adresInput.value = this.textContent;
+              var d = docs[parseInt(this.dataset.i)];
+              var straat = (d.straatnaam || '') + (d.huisnummer ? ' ' + d.huisnummer : '');
+              adresInput.value = straat || d.weergavenaam;
+              if (d.postcode) {
+                var pc = d.postcode;
+                document.getElementById('postcode').value = pc.length === 6 ? pc.slice(0,4) + ' ' + pc.slice(4) : pc;
+                clearError('err-postcode', 'postcode');
+              }
+              if (d.woonplaatsnaam) {
+                document.getElementById('plaats').value = d.woonplaatsnaam;
+                clearError('err-plaats', 'plaats');
+              }
               adresDropdown.style.display = 'none';
               clearError('err-adres', 'adres');
             });
@@ -924,9 +948,12 @@
     if (inputId) document.getElementById(inputId).classList.remove('invalid');
   }
 
-  ['adres', 'naam', 'telefoon', 'email'].forEach(function(id) {
+  ['adres', 'postcode', 'plaats', 'naam', 'telefoon', 'email'].forEach(function(id) {
     var el = document.getElementById(id);
-    if (el) el.addEventListener('input', function() { clearError('err-' + (id === 'telefoon' ? 'tel' : id === 'email' ? 'email' : id), id); });
+    if (el) el.addEventListener('input', function() {
+      var errId = id === 'telefoon' ? 'err-tel' : 'err-' + id;
+      clearError(errId, id);
+    });
   });
 
   document.getElementById('toestemming').addEventListener('change', function() {
@@ -939,6 +966,12 @@
 
     var adres = document.getElementById('adres').value.trim();
     if (!adres) { showError('err-adres', 'adres'); valid = false; } else { clearError('err-adres', 'adres'); }
+
+    var postcode = document.getElementById('postcode').value.trim();
+    if (!postcode) { showError('err-postcode', 'postcode'); valid = false; } else { clearError('err-postcode', 'postcode'); }
+
+    var plaats = document.getElementById('plaats').value.trim();
+    if (!plaats) { showError('err-plaats', 'plaats'); valid = false; } else { clearError('err-plaats', 'plaats'); }
 
     var naam = document.getElementById('naam').value.trim();
     if (!naam) { showError('err-naam', 'naam'); valid = false; } else { clearError('err-naam', 'naam'); }
