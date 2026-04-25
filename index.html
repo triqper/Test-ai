@@ -78,13 +78,15 @@
       background: var(--white);
       border-radius: var(--r);
       padding: 32px 36px 28px;
-      max-width: 420px;
+      max-width: 480px;
       width: calc(100% - 40px);
       box-shadow: 0 8px 40px rgba(0,0,0,.15);
       position: relative;
       font-size: 1rem;
       color: var(--text);
       line-height: 1.7;
+      max-height: 85vh;
+      overflow-y: auto;
     }
     .info-close {
       position: absolute;
@@ -665,6 +667,8 @@
     <button class="info-close" onclick="document.getElementById('infoOverlay').classList.remove('show')">×</button>
     <p>Woonstroom is een initiatief in samenwerking met een erkende Nederlandse financiële instelling en data expert in de woonsector.</p>
     <p style="margin-top:16px;">Onze missie is om mensen te helpen in deze gekke woningmarkt te verhuizen naar hun gewenste woning. Met behulp van deze flyer campagne proberen wij in contact te komen met woningeigenaren om meer te leren over hun behoeften en hoe wij ze hierbij kunnen helpen.</p>
+    <hr style="border:none;border-top:1px solid var(--border);margin:20px 0;">
+    <div id="faq-popup"></div>
   </div>
 </div>
 
@@ -811,35 +815,7 @@
     <div class="section-label" style="margin-bottom:10px">Vragen</div>
     <div class="section-title" style="margin-bottom:32px">Veelgestelde vragen</div>
 
-    <details>
-      <summary>Hoe ziet het videogesprek eruit? <span class="faq-toggle">+</span></summary>
-      <div class="faq-body">
-        <p>Het videogesprek is puur voor ons om beter te begrijpen hoe we onze propositie moeten vormgeven. Het is geheel vrijblijvend, we proberen je niks te verkopen en je zit nergens aan vast. Jouw input helpt ons in onze missie om de woningmarkt toegankelijker te maken voor iedereen.</p>
-        <p>Na je aanmelding nemen we contact met je op via de voorkeurmethode die jij hebt aangegeven in het formulier om een belafspraak in te plannen. In het gesprek ontvang je ook de verkoopscan van jouw woning, hier kun je direct vragen over stellen en kun je ook na het gesprek in alle rust nog raadplegen.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>Wat is de inhoud van de gratis verkoopscan? <span class="faq-toggle">+</span></summary>
-      <div class="faq-body">
-        <p>Met de verkoopscan krijg je direct inzicht in je woningwaarde, verkoopprijzen in de buurt en hoe de markt in jouw buurt ervoor staat.</p>
-        <p>De verkoopscan is gebaseerd op actuele verkoopdata van woningen in jouw buurt in combinatie met een realistische inschatting door een woning expert van onze partner.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>Wat is het addertje onder het gras? <span class="faq-toggle">+</span></summary>
-      <div class="faq-body">
-        <p>Geen! Al begrijpen we het als je argwanend bent, maar op dit moment is ons platform nog niet beschikbaar en is ons doel enkel om te leren wat de behoeften zijn van mensen die nadenken over verhuizen. We proberen je niks te verkopen en je zit nergens aan vast als je met ons in gesprek gaat. In ruil daarvoor bieden we je gratis een verkoopscan van een van onze partners aan voor jouw woning t.w.v. €50.-</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>Waarom heb ik deze flyer ontvangen? <span class="faq-toggle">+</span></summary>
-      <div class="faq-body">
-        <p>Zo'n 150 woningeigenaren hebben een flyer van ons ontvangen om in aanmerking te komen voor een gratis verkoopscan van hun woning in ruil voor een videogesprek waarin wij beter de behoeften willen leren begrijpen van mensen die nadenken over verhuizen. De woningen zijn willekeurig bepaald en zonder specifieke targeting geselecteerd.</p>
-      </div>
-    </details>
+    <div id="faq-main"></div>
   </div>
 </div>
 
@@ -868,6 +844,40 @@
 </footer>
 
 <script>
+  var faqData = [
+    {
+      v: 'Hoe ziet het videogesprek eruit?',
+      a: '<p>Het videogesprek is puur voor ons om beter te begrijpen hoe we onze propositie moeten vormgeven. Het is geheel vrijblijvend, we proberen je niks te verkopen en je zit nergens aan vast. Jouw input helpt ons in onze missie om de woningmarkt toegankelijker te maken voor iedereen.</p><p>Na je aanmelding nemen we contact met je op via de voorkeurmethode die jij hebt aangegeven in het formulier om een belafspraak in te plannen. In het gesprek ontvang je ook de verkoopscan van jouw woning, hier kun je direct vragen over stellen en kun je ook na het gesprek in alle rust nog raadplegen.</p>'
+    },
+    {
+      v: 'Wat is de inhoud van de gratis verkoopscan?',
+      a: '<p>Met de verkoopscan krijg je direct inzicht in je woningwaarde, verkoopprijzen in de buurt en hoe de markt in jouw buurt ervoor staat.</p><p>De verkoopscan is gebaseerd op actuele verkoopdata van woningen in jouw buurt in combinatie met een realistische inschatting door een woning expert van onze partner.</p>'
+    },
+    {
+      v: 'Wat is het addertje onder het gras?',
+      a: '<p>Geen! Al begrijpen we het als je argwanend bent, maar op dit moment is ons platform nog niet beschikbaar en is ons doel enkel om te leren wat de behoeften zijn van mensen die nadenken over verhuizen. We proberen je niks te verkopen en je zit nergens aan vast als je met ons in gesprek gaat. In ruil daarvoor bieden we je gratis een verkoopscan van een van onze partners aan voor jouw woning t.w.v. €50.-</p>'
+    },
+    {
+      v: 'Waarom heb ik deze flyer ontvangen?',
+      a: '<p>Zo\'n 150 woningeigenaren hebben een flyer van ons ontvangen om in aanmerking te komen voor een gratis verkoopscan van hun woning in ruil voor een videogesprek waarin wij beter de behoeften willen leren begrijpen van mensen die nadenken over verhuizen. De woningen zijn willekeurig bepaald en zonder specifieke targeting geselecteerd.</p>'
+    }
+  ];
+
+  function renderFaq(containerId) {
+    var el = document.getElementById(containerId);
+    el.innerHTML = faqData.map(function(item) {
+      return '<details><summary>' + item.v + ' <span class="faq-toggle">+</span></summary><div class="faq-body">' + item.a + '</div></details>';
+    }).join('');
+    el.querySelectorAll('details').forEach(function(d) {
+      d.addEventListener('toggle', function() {
+        d.querySelector('.faq-toggle').textContent = d.open ? '−' : '+';
+      });
+    });
+  }
+
+  renderFaq('faq-main');
+  renderFaq('faq-popup');
+
   function updateContact(radio) {
     var fTel   = document.getElementById('f-tel');
     var fEmail = document.getElementById('f-email');
@@ -886,11 +896,6 @@
     }
   }
 
-  document.querySelectorAll('details').forEach(function(d) {
-    d.addEventListener('toggle', function() {
-      d.querySelector('.faq-toggle').textContent = d.open ? '−' : '+';
-    });
-  });
 
   // PDOK adres autocomplete
   var adresInput    = document.getElementById('adres');
