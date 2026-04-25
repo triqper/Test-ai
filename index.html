@@ -917,6 +917,7 @@
               var d = docs[parseInt(this.dataset.i)];
               var straat = (d.straatnaam || '') + (d.huisnummer ? ' ' + d.huisnummer : '');
               adresInput.value = straat || d.weergavenaam;
+              adresInput.blur();
               if (d.postcode) {
                 var pc = d.postcode;
                 document.getElementById('postcode').value = pc.length === 6 ? pc.slice(0,4) + ' ' + pc.slice(4) : pc;
