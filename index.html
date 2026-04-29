@@ -819,8 +819,8 @@
 
           <div class="cond field" id="f-tel">
             <label for="telefoon">Op welk telefoonnummer kunnen we je bereiken?</label>
-            <input type="tel" id="telefoon" name="telefoon" placeholder="+31 6 12 34 56 78" />
-            <span class="error-msg" id="err-tel">Vul je telefoonnummer in.</span>
+            <input type="tel" id="telefoon" name="telefoon" placeholder="+31 6 12 34 56 78" oninput="validateTelInline()" />
+            <span class="error-msg" id="err-tel">Vul een geldig telefoonnummer in.</span>
           </div>
           <div class="cond field" id="f-email">
             <label for="email">Wat is je emailadres?</label>
@@ -898,6 +898,13 @@
       a: '<p>Deze flyeractie is bedoeld om interesse te meten in onze oplossing. Het betreft een kleine willekeurige test.</p><p>Zo\'n 150 woningeigenaren hebben een flyer van ons ontvangen waarmee ze in aanmerking komen voor een gratis verkoopscan van hun woning in ruil voor deelname aan een kort videogesprek. De woningen zijn willekeurig bepaald en zonder specifieke targeting geselecteerd.</p><p>We zijn een klein team wat de behoefte van dit platform onderzoekt, dit doen we in samenwerking met een erkende Nederlandse financiële instelling.</p><p>We zouden het heel leuk vinden als je met ons in gesprek wilt over het onderwerp verhuizen. Zie je dit niet zitten dan begrijpen we dat natuurlijk ook.</p>'
     }
   ];
+
+  function validateTelInline() {
+    var val = document.getElementById('telefoon').value.trim().replace(/[\s\-\.]/g, '');
+    if (val.length === 0) { clearError('err-tel', 'telefoon'); return; }
+    var ok = /^(\+31|0031|0)[1-9][0-9]{8}$/.test(val);
+    if (!ok) { showError('err-tel', 'telefoon'); } else { clearError('err-tel', 'telefoon'); }
+  }
 
   function renderFaq(containerId) {
     var el = document.getElementById(containerId);
@@ -1038,7 +1045,8 @@
 
     if (contact && (contact.value === 'bel' || contact.value === 'whatsapp')) {
       var tel = document.getElementById('telefoon').value.trim();
-      if (!tel) { showError('err-tel', 'telefoon'); valid = false; } else { clearError('err-tel', 'telefoon'); }
+      var telOk = /^(\+31|0031|0)[1-9][0-9]{8}$/.test(tel.replace(/[\s\-\.]/g, ''));
+      if (!telOk) { showError('err-tel', 'telefoon'); valid = false; } else { clearError('err-tel', 'telefoon'); }
     }
     if (contact && contact.value === 'mail') {
       var email = document.getElementById('email').value.trim();
