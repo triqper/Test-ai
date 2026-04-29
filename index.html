@@ -609,19 +609,13 @@
     }
     summary::-webkit-details-marker { display: none; }
     .faq-toggle {
-      width: 28px; height: 28px;
-      border-radius: 50%;
-      background: var(--bg);
-      border: 1.5px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem;
-      font-weight: 300;
+      font-size: 1.5rem;
+      font-weight: 400;
       flex-shrink: 0;
-      color: var(--muted);
-      transition: background .2s, border-color .2s;
+      color: var(--black);
+      line-height: 1;
     }
-    details[open] .faq-toggle { background: var(--purple); border-color: var(--purple); color: var(--black); }
-    details[open] summary { color: var(--green); }
+    details[open] summary { color: var(--purple-mid); }
     .faq-body {
       padding: 0 0 22px;
       font-size: .93rem;
