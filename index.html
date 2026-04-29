@@ -229,10 +229,12 @@
 .portrait-circle img {
       width: 100%; height: 100%;
       object-fit: cover;
+      object-position: center 20%;
       display: block;
     }
     @media (min-width: 681px) {
       .portrait-circle { width: 200px; height: 200px; }
+      .hero-portraits { padding-bottom: 40px; }
     }
     .usp-block {
       background: var(--bg);
@@ -619,6 +621,7 @@
       line-height: 1;
     }
     details[open] summary { color: var(--purple-mid); }
+    details[open] .faq-toggle { color: var(--purple-mid); }
     .faq-body {
       padding: 0 0 22px;
       font-size: .93rem;
