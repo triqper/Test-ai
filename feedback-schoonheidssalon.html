@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Feedbackformulier Schoonheidssalon</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --rose:       #c98a9c;
+    --rose-dark:  #a4657a;
+    --rose-light: #f8e6ea;
+    --cream:      #fdf8f5;
+    --gold:       #cbb26a;
+    --text:       #3a2f31;
+    --muted:      #7a6a6d;
+    --border:     #e9dade;
+    --white:      #ffffff;
+    --error:      #b3423e;
+    --r: 16px;
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(180deg, var(--rose-light) 0%, var(--cream) 320px);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 40px 16px 80px;
+  }
+
+  .wrap { max-width: 640px; margin: 0 auto; }
+
+  header.page-header { text-align: center; margin-bottom: 32px; }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--white);
+    box-shadow: 0 4px 14px rgba(169, 101, 122, .18);
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--rose-dark);
+    margin-bottom: 8px;
+  }
+
+  .page-header p { color: var(--muted); font-size: .95rem; }
+
+  .card {
+    background: var(--white);
+    border-radius: var(--r);
+    box-shadow: 0 12px 32px rgba(169, 101, 122, .12);
+    padding: 36px;
+  }
+
+  @media (max-width: 480px) {
+    .card { padding: 24px 20px; }
+  }
+
+  .field { margin-bottom: 22px; }
+
+  label {
+    display: block;
+    font-weight: 600;
+    font-size: .92rem;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  label .req { color: var(--rose-dark); margin-left: 2px; }
+
+  input[type="text"],
+  input[type="email"],
+  textarea {
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+    font-size: .95rem;
+    color: var(--text);
+    background: var(--cream);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    transition: border-color .15s, box-shadow .15s;
+  }
+
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--rose);
+    box-shadow: 0 0 0 3px rgba(201, 138, 156, .18);
+  }
+
+  textarea { resize: vertical; min-height: 84px; }
+
+  fieldset {
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  legend {
+    font-weight: 600;
+    font-size: .92rem;
+    padding: 0 6px;
+  }
+
+  .radio-row {
+    display: flex;
+    gap: 24px;
+    margin-top: 6px;
+  }
+
+  .radio-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: .95rem;
+  }
+
+  .radio-option input { width: 18px; height: 18px; accent-color: var(--rose-dark); cursor: pointer; }
+
+  .discount-note {
+    margin-top: 14px;
+    font-size: .85rem;
+    color: var(--muted);
+    background: var(--rose-light);
+    border-radius: 8px;
+    padding: 10px 12px;
+    border-left: 3px solid var(--gold);
+  }
+
+  .error-text {
+    color: var(--error);
+    font-size: .82rem;
+    margin-top: 6px;
+    display: none;
+  }
+
+  .field.invalid input,
+  .field.invalid textarea,
+  .field.invalid fieldset { border-color: var(--error); }
+  .field.invalid .error-text { display: block; }
+
+  button.submit {
+    width: 100%;
+    background: var(--rose-dark);
+    color: var(--white);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    cursor: pointer;
+    transition: background .15s, transform .1s;
+    margin-top: 8px;
+  }
+
+  button.submit:hover { background: #8f5164; }
+  button.submit:active { transform: scale(.99); }
+
+  .confirmation { text-align: center; }
+
+  .confirmation .badge { background: var(--rose-light); }
+
+  .confirmation h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--rose-dark);
+    margin-bottom: 10px;
+  }
+
+  .confirmation p { color: var(--muted); margin-bottom: 22px; }
+
+  .download-link {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: .92rem;
+    padding: 12px 22px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+  }
+
+  .new-response {
+    display: block;
+    margin: 12px auto 0;
+    background: none;
+    border: none;
+    color: var(--rose-dark);
+    font-size: .88rem;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page-header">
+    <span class="badge" aria-hidden="true">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C12 2 9 6 9 9.5C9 11.4 10.3 13 12 13C13.7 13 15 11.4 15 9.5C15 6 12 2 12 2Z" fill="#c98a9c"/>
+        <path d="M12 13C12 13 6 15 6 19.5C6 20.9 8.7 22 12 22C15.3 22 18 20.9 18 19.5C18 15 12 13 12 13Z" fill="#cbb26a"/>
+      </svg>
+    </span>
+    <h1>Feedbackformulier Schoonheidssalon</h1>
+    <p>We horen graag hoe u uw behandeling heeft ervaren.</p>
+  </header>
+
+  <div class="card" id="formCard">
+    <form id="feedbackForm" novalidate>
+
+      <div class="field" data-field="naam">
+        <label for="naam">Naam<span class="req">*</span></label>
+        <input type="text" id="naam" name="naam" autocomplete="name" />
+        <p class="error-text">Vul uw naam in.</p>
+      </div>
+
+      <div class="field" data-field="email">
+        <label for="email">E-mailadres<span class="req">*</span></label>
+        <input type="email" id="email" name="email" autocomplete="email" />
+        <p class="error-text">Vul een geldig e-mailadres in.</p>
+      </div>
+
+      <div class="field" data-field="ervaring">
+        <label for="ervaring">Hoe heeft u de behandeling ervaren?<span class="req">*</span></label>
+        <textarea id="ervaring" name="ervaring"></textarea>
+        <p class="error-text">Vertel ons hoe u de behandeling heeft ervaren.</p>
+      </div>
+
+      <div class="field" data-field="goed">
+        <label for="goed">Wat vond u goed aan de behandeling?</label>
+        <textarea id="goed" name="goed"></textarea>
+      </div>
+
+      <div class="field" data-field="beter">
+        <label for="beter">Wat kon er beter?</label>
+        <textarea id="beter" name="beter"></textarea>
+      </div>
+
+      <div class="field" data-field="prijs">
+        <label for="prijs">Wat vindt u van de prijs?</label>
+        <textarea id="prijs" name="prijs"></textarea>
+      </div>
+
+      <div class="field" data-field="googleReview">
+        <fieldset>
+          <legend>Bent u bereid om deze beoordeling ook op Google te delen?</legend>
+          <div class="radio-row">
+            <label class="radio-option">
+              <input type="radio" name="googleReview" value="ja" />
+              Ja
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="googleReview" value="nee" />
+              Nee
+            </label>
+          </div>
+          <p class="discount-note">Als u "Ja" aanklikt, ontvangt u een korting van 10 euro voor uw volgende behandeling, direct als PDF-kortingsbon.</p>
+        </fieldset>
+        <p class="error-text">Maak een keuze.</p>
+      </div>
+
+      <button type="submit" class="submit">Verzend</button>
+    </form>
+  </div>
+
+  <div class="card confirmation" id="confirmCard" hidden>
+    <span class="badge" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M5 13l4 4L19 7" stroke="#c98a9c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+    <h2>Bedankt voor uw feedback!</h2>
+    <p id="confirmMessage">We waarderen het dat u de tijd heeft genomen.</p>
+    <a href="#" id="downloadLink" class="download-link" hidden download>Download uw kortingsbon (PDF)</a>
+    <button type="button" class="new-response" id="newResponseBtn">Nog een formulier invullen</button>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var form = document.getElementById('feedbackForm');
+  var formCard = document.getElementById('formCard');
+  var confirmCard = document.getElementById('confirmCard');
+  var confirmMessage = document.getElementById('confirmMessage');
+  var downloadLink = document.getElementById('downloadLink');
+  var newResponseBtn = document.getElementById('newResponseBtn');
+
+  function escPdfText(str) {
+    return str.replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
+  }
+
+  function toLatin1(str) {
+    var out = '';
+    for (var i = 0; i < str.length; i++) {
+      var code = str.charCodeAt(i);
+      out += code <= 255 ? str[i] : '?';
+    }
+    return out;
+  }
+
+  function pdfText(str) {
+    return escPdfText(toLatin1(str));
+  }
+
+  function buildCouponPdf(naam, code, datum) {
+    var contentLines = [
+      'q',
+      '0.973 0.902 0.918 rg',
+      '0 0 400 260 re',
+      'f',
+      '0.788 0.396 0.478 RG',
+      '2 w',
+      '6 6 388 248 re',
+      'S',
+      'Q',
+      'BT /F1 20 Tf 0 0 0 rg 40 210 Td (Kortingsbon) Tj ET',
+      'BT /F1 11 Tf 40 188 Td (Schoonheidssalon) Tj ET',
+      'BT /F1 12 Tf 40 158 Td (Beste ' + pdfText(naam) + ',) Tj ET',
+      'BT /F1 12 Tf 40 138 Td (Bedankt voor het delen van uw review!) Tj ET',
+      'BT /F1 12 Tf 40 118 Td (U ontvangt EUR 10,00 korting) Tj ET',
+      'BT /F1 12 Tf 40 98 Td (op uw volgende behandeling.) Tj ET',
+      'BT /F1 15 Tf 40 60 Td (Code: ' + pdfText(code) + ') Tj ET',
+      'BT /F1 9 Tf 40 34 Td (Geldig bij inwisseling in de salon. Datum: ' + pdfText(datum) + ') Tj ET'
+    ];
+    var content = contentLines.join('\n');
+
+    var objects = [];
+    objects.push('<< /Type /Catalog /Pages 2 0 R >>');
+    objects.push('<< /Type /Pages /Kids [3 0 R] /Count 1 >>');
+    objects.push('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 400 260] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>');
+    objects.push('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>');
+    objects.push('<< /Length ' + content.length + ' >>\nstream\n' + content + '\nendstream');
+
+    var pdf = '%PDF-1.4\n';
+    var offsets = [0];
+    for (var i = 0; i < objects.length; i++) {
+      offsets.push(pdf.length);
+      pdf += (i + 1) + ' 0 obj\n' + objects[i] + '\nendobj\n';
+    }
+    var xrefStart = pdf.length;
+    pdf += 'xref\n0 ' + (objects.length + 1) + '\n';
+    pdf += '0000000000 65535 f \n';
+    for (var j = 1; j <= objects.length; j++) {
+      var offStr = String(offsets[j]);
+      while (offStr.length < 10) offStr = '0' + offStr;
+      pdf += offStr + ' 00000 n \n';
+    }
+    pdf += 'trailer\n<< /Size ' + (objects.length + 1) + ' /Root 1 0 R >>\nstartxref\n' + xrefStart + '\n%%EOF';
+
+    var bytes = new Uint8Array(pdf.length);
+    for (var k = 0; k < pdf.length; k++) bytes[k] = pdf.charCodeAt(k) & 0xFF;
+    return bytes;
+  }
+
+  function generateCode() {
+    var time = Date.now().toString(36).toUpperCase().slice(-5);
+    var rand = Math.random().toString(36).toUpperCase().slice(2, 6);
+    return 'SALON-' + time + rand;
+  }
+
+  function setInvalid(name, invalid) {
+    var el = form.querySelector('[data-field="' + name + '"]');
+    if (el) el.classList.toggle('invalid', invalid);
+  }
+
+  function validate() {
+    var naam = form.naam.value.trim();
+    var email = form.email.value.trim();
+    var ervaring = form.ervaring.value.trim();
+    var review = form.querySelector('input[name="googleReview"]:checked');
+    var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    setInvalid('naam', !naam);
+    setInvalid('email', !emailOk);
+    setInvalid('ervaring', !ervaring);
+    setInvalid('googleReview', !review);
+
+    return Boolean(naam && emailOk && ervaring && review);
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!validate()) return;
+
+    var naam = form.naam.value.trim();
+    var review = form.querySelector('input[name="googleReview"]:checked').value;
+
+    if (review === 'ja') {
+      var code = generateCode();
+      var datum = new Date().toLocaleDateString('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric' });
+      var bytes = buildCouponPdf(naam, code, datum);
+      var blob = new Blob([bytes], { type: 'application/pdf' });
+      var url = URL.createObjectURL(blob);
+
+      downloadLink.href = url;
+      downloadLink.download = 'kortingsbon-' + code + '.pdf';
+      downloadLink.hidden = false;
+      confirmMessage.textContent = 'Bedankt, ' + naam + '! Uw kortingsbon van 10 euro is gegenereerd en direct beschikbaar in de salon.';
+      downloadLink.click();
+    } else {
+      downloadLink.hidden = true;
+      confirmMessage.textContent = 'Bedankt voor uw feedback, ' + naam + '!';
+    }
+
+    formCard.hidden = true;
+    confirmCard.hidden = false;
+    confirmCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  newResponseBtn.addEventListener('click', function () {
+    form.reset();
+    Array.prototype.forEach.call(form.querySelectorAll('.field'), function (el) {
+      el.classList.remove('invalid');
+    });
+    downloadLink.hidden = true;
+    confirmCard.hidden = true;
+    formCard.hidden = false;
+    formCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+})();
+</script>
+</body>
+</html>
